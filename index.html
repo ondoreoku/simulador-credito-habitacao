@@ -3,82 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Crédito Habitação 2026 | Amortização e Poupança</title>
+    <title>Simulador Crédito Habitação 2026 | Taxa Fixa e Variável</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23059669'%3E%3Cpath d='M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6163421497152187" crossorigin="anonymous"></script>
 </head>
 <body>
     <nav class="navbar-global">
-    <div class="nav-container">
-        <a href="/" class="nav-logo">Financeiro <span style="color: #059669;">2026</span></a>
-        <ul class="nav-links">
-            <li><a href="https://salarioliquido.vercel.app/">Salário</a></li>
-            <li><a href="https://simulador-credito-habitacao-2026.vercel.app/">Crédito</a></li>
-            <li><a href="https://calculadora-rescisao-contrato.vercel.app/">Rescisão</a></li>
-            <li><a href="https://simulador-subsidio-desemprego.vercel.app/">Desemprego</a></li>
-        </ul>
-        <div class="nav-mobile-menu">☰</div>
-    </div>
+        <div class="nav-container">
+            <a href="/" class="nav-logo">Financeiro <span style="color: var(--primary);">2026</span></a>
+            <ul class="nav-links">
+                <li><a href="https://salarioliquido.vercel.app/">Salário</a></li>
+                <li><a href="https://simulador-credito-habitacao-2026.vercel.app/" class="active">Crédito</a></li>
+                <li><a href="https://calculadora-rescisao-contrato.vercel.app/">Rescisão</a></li>
+                <li><a href="https://simulador-subsidio-desemprego.vercel.app/">Desemprego</a></li>
+            </ul>
+        </div>
+    </nav>
+
     <div class="container">
-        <header>
+        <header style="text-align: center; margin-bottom: 40px;">
             <h1>Simulador de Crédito Habitação 2026</h1>
-            <p>Calcule a sua prestação e descubra quanto pode poupar ao amortizar capital.</p>
+            <p>Calcule a prestação mensal, MTIC e o impacto das taxas Euribor.</p>
         </header>
 
         <section class="card">
             <div class="grid">
                 <div class="input-group">
-                    <label>Capital em Dívida (€)</label>
-                    <input type="number" id="capital" value="150000">
+                    <label>Valor do Imóvel (€)</label>
+                    <input type="number" id="valorImovel" value="250000" oninput="updateFinanciamento()">
+                </div>
+                <div class="input-group">
+                    <label>Entrada Própria (€)</label>
+                    <input type="number" id="entrada" value="25000" oninput="updateFinanciamento()">
                 </div>
                 <div class="input-group">
                     <label>Prazo (Anos)</label>
                     <input type="number" id="prazo" value="30">
                 </div>
                 <div class="input-group">
-                    <label>Taxa de Juro (Euribor + Spread %)</label>
-                    <input type="number" id="taxa" value="3.5" step="0.01">
+                    <label>Spread / Taxa Fixa (%)</label>
+                    <input type="number" id="spread" value="0.8" step="0.1">
                 </div>
-                <div class="input-group">
-                    <label>Amortização Extra (€)</label>
-                    <input type="number" id="extra" value="0" placeholder="Ex: 5000">
+                <div class="input-group" style="grid-column: span 2;">
+                    <label>Indexante (Euribor)</label>
+                    <select id="euribor">
+                        <option value="0">Taxa Fixa (0%)</option>
+                        <option value="2.5">Euribor 6 Meses (Estimativa 2026: 2.5%)</option>
+                        <option value="2.8">Euribor 12 Meses (Estimativa 2026: 2.8%)</option>
+                    </select>
                 </div>
             </div>
-            <button class="btn-main" onclick="calcularCredito()">Simular Poupança</button>
 
-            <div id="results" class="results-area" style="display: none;">
+            <button class="btn-main" onclick="calcularCredito()">Calcular Prestação</button>
+
+            <div id="results" class="results-area" style="display: none; margin-top: 25px;">
                 <div class="grid-res">
                     <div class="res-card">
-                        <small>Prestação Mensal</small>
+                        <small>Prestação Mensal Est.</small>
                         <div id="out-prestacao" class="big-val"></div>
                     </div>
                     <div class="res-card">
-                        <small>Total de Juros s/ Amortizar</small>
-                        <div id="out-juros" class="big-val" style="color: #ef4444;"></div>
+                        <small>Montante Financiado</small>
+                        <div id="out-financiado" class="big-val" style="color: #374151;"></div>
                     </div>
                 </div>
-                <div class="chart-container">
-                    <canvas id="savingsChart"></canvas>
+                <div class="res-card" style="margin-top: 15px; background: #f8fafc;">
+                    <small>MTIC (Total a pagar ao banco)</small>
+                    <div id="out-mtic" style="font-size: 1.4rem; font-weight: 700;"></div>
                 </div>
-                <div id="amortization-info" class="highlight-info"></div>
             </div>
         </section>
 
         <article class="card info-content">
-            <h2>Guia: Como Vencer os Juros do Crédito Habitação em 2026</h2>
-            <p>O mercado imobiliário em Portugal atravessa um momento de transformação. Com as taxas Euribor a estabilizarem, muitos proprietários perguntam-se: <strong>vale a pena amortizar o crédito da casa?</strong> A resposta curta é sim.</p>
-            <p>Amortizar antecipadamente significa entregar ao banco um valor extra que é abatido diretamente ao <strong>capital em dívida</strong>. Ao contrário da prestação normal, onde parte do valor paga juros, na amortização extraordinária 100% do valor reduz o saldo devedor. Isto evita o pagamento de juros sobre juros, resultando numa poupança que pode triplicar o valor investido.</p>
-            <h3>Reduzir Prestação ou Prazo?</h3>
-            <p>Reduzir a prestação dá "oxigénio" mensal ao orçamento familiar. Já reduzir o prazo é financeiramente mais poderoso, pois corta anos de juros ao banco. Verifique sempre a comissão de amortização (0,5% para taxa variável), mas lembre-se que a poupança final costuma compensar largamente este custo.</p>
+            <h2>Mercado de Crédito Habitação em Portugal (2026)</h2>
+            <p>A compra de casa continua a ser o maior investimento das famílias portuguesas. Em 2026, o cenário de taxas de juro exige uma análise rigorosa entre a <strong>Taxa Fixa</strong>, a <strong>Taxa Mista</strong> e a <strong>Taxa Variável</strong>.</p>
+            
+            <h3>LTV e Regras do Banco de Portugal</h3>
+            <p>O <em>Loan-to-Value</em> (LTV) é rácio entre o valor do empréstimo e o valor do imóvel. Para habitação própria e permanente, os bancos financiam geralmente até 90% do valor da escritura ou avaliação (o menor dos dois). É essencial ter uma poupança para a entrada mínima de 10%, além dos impostos como o IMT e o Imposto do Selo.</p>
+
+            <h3>Taxas Euribor e Spread</h3>
+            <p>O custo do crédito é composto pelo indexante (Euribor a 3, 6 ou 12 meses) e pelo <strong>spread</strong> (a margem de lucro do banco). Em 2026, prevemos uma estabilização da Euribor, mas o spread pode ser reduzido se subscrever produtos adicionais como seguros de vida e multirriscos, ou domiciliação de ordenado.</p>
         </article>
 
-        <footer>
-            <p>&copy; 2026 Simulador Financeiro</p>
-            <nav>
-                <a href="privacidade.html">Privacidade</a> | <a href="termos.html">Termos</a> | <a href="contacto.html">Contacto</a>
-            </nav>
+        <footer style="text-align: center; margin-top: 40px; padding-bottom: 40px; color: #6b7280; font-size: 0.8rem;">
+            <a href="privacidade.html">Privacidade</a> | <a href="termos.html">Termos</a> | <a href="contacto.html">Contacto</a>
+            <p>© 2026 Rede Financeira Pro</p>
         </footer>
     </div>
     <script src="script.js"></script>
