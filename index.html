@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Crédito Habitação 2026 - Amortização e Poupança</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23059669'%3E%3Cpath d='M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Simulador de Crédito Habitação</h1>
+            <p>Calcule a sua prestação e descubra quanto poupa ao amortizar.</p>
+        </header>
+
+        <section class="card">
+            <div class="grid">
+                <div class="input-group">
+                    <label>Capital em Dívida (€)</label>
+                    <input type="number" id="capital" value="150000" step="1000">
+                </div>
+                <div class="input-group">
+                    <label>Prazo Restante (Anos)</label>
+                    <input type="number" id="prazo" value="30">
+                </div>
+                <div class="input-group">
+                    <label>Taxa de Juro (Euribor + Spread %)</label>
+                    <input type="number" id="taxa" value="4.0" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label>Amortização Extra (€)</label>
+                    <input type="number" id="extra" value="0" placeholder="Ex: 5000">
+                </div>
+            </div>
+            <button class="btn-main" onclick="calcularCredito()">Simular Poupança</button>
+        </section>
+
+        <div id="results" class="results-area" style="display: none;">
+            <div class="grid">
+                <div class="res-card">
+                    <small>Prestação Mensal</small>
+                    <div id="out-prestacao" class="big-val"></div>
+                </div>
+                <div class="res-card">
+                    <small>Total de Juros (s/ amortizar)</small>
+                    <div id="out-juros" class="big-val" style="color: #ef4444;"></div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="savingsChart"></canvas>
+            </div>
+
+            <div id="amortization-info" class="highlight-info"></div>
+        </div>
+
+        <article class="seo-content">
+            <h3>Como funciona a Amortização Antecipada?</h3>
+            <p>Em Portugal, amortizar o crédito habitação permite reduzir o capital em dívida diretamente, poupando nos juros compostos ao longo dos anos restantes. Em 2026, com as variações da Euribor, esta estratégia é fundamental para o equilíbrio das finanças familiares.</p>
+        </article>
+
+        <footer>
+            <a href="privacidade.html">Privacidade</a> | <a href="contacto.html">Contacto</a>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
