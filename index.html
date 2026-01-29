@@ -12,8 +12,8 @@
 <body>
     <div class="container">
         <header>
-            <h1>Simulador de Crédito Habitação</h1>
-            <p>Calcule a sua prestação mensal e o impacto real de amortizar capital em 2026.</p>
+            <h1>Simulador de Crédito Habitação 2026</h1>
+            <p>Calcule a sua prestação e descubra quanto pode poupar ao amortizar capital.</p>
         </header>
 
         <section class="card">
@@ -23,7 +23,7 @@
                     <input type="number" id="capital" value="150000">
                 </div>
                 <div class="input-group">
-                    <label>Prazo Restante (Anos)</label>
+                    <label>Prazo (Anos)</label>
                     <input type="number" id="prazo" value="30">
                 </div>
                 <div class="input-group">
@@ -31,11 +31,11 @@
                     <input type="number" id="taxa" value="3.5" step="0.01">
                 </div>
                 <div class="input-group">
-                    <label>Amortização Extra Única (€)</label>
+                    <label>Amortização Extra (€)</label>
                     <input type="number" id="extra" value="0" placeholder="Ex: 5000">
                 </div>
             </div>
-            <button class="btn-main" onclick="calcularCredito()">Simular Prestação e Poupança</button>
+            <button class="btn-main" onclick="calcularCredito()">Simular Poupança</button>
 
             <div id="results" class="results-area" style="display: none;">
                 <div class="grid-res">
@@ -48,28 +48,25 @@
                         <div id="out-juros" class="big-val" style="color: #ef4444;"></div>
                     </div>
                 </div>
-
                 <div class="chart-container">
                     <canvas id="savingsChart"></canvas>
                 </div>
-                
-
                 <div id="amortization-info" class="highlight-info"></div>
             </div>
         </section>
 
-        <article class="card seo-content">
-            <h3>Como Poupar Milhares em Juros em 2026</h3>
-            <p>A amortização antecipada é a forma mais eficaz de reduzir o <strong>MTIC (Montante Total Imputado ao Consumidor)</strong>. Em Portugal, ao abater capital diretamente, evita que os juros incidam sobre esse valor durante décadas.</p>
-            <p>Mesmo com as comissões de amortização (0,5% para taxa variável), o benefício de reduzir o saldo devedor supera largamente o custo da operação, especialmente em fases de Euribor elevada.</p>
+        <article class="card info-content">
+            <h2>Guia: Como Vencer os Juros do Crédito Habitação em 2026</h2>
+            <p>O mercado imobiliário em Portugal atravessa um momento de transformação. Com as taxas Euribor a estabilizarem, muitos proprietários perguntam-se: <strong>vale a pena amortizar o crédito da casa?</strong> A resposta curta é sim.</p>
+            <p>Amortizar antecipadamente significa entregar ao banco um valor extra que é abatido diretamente ao <strong>capital em dívida</strong>. Ao contrário da prestação normal, onde parte do valor paga juros, na amortização extraordinária 100% do valor reduz o saldo devedor. Isto evita o pagamento de juros sobre juros, resultando numa poupança que pode triplicar o valor investido.</p>
+            <h3>Reduzir Prestação ou Prazo?</h3>
+            <p>Reduzir a prestação dá "oxigénio" mensal ao orçamento familiar. Já reduzir o prazo é financeiramente mais poderoso, pois corta anos de juros ao banco. Verifique sempre a comissão de amortização (0,5% para taxa variável), mas lembre-se que a poupança final costuma compensar largamente este custo.</p>
         </article>
 
         <footer>
             <p>&copy; 2026 Simulador Financeiro</p>
             <nav>
-                <a href="privacidade.html">Privacidade</a> | 
-                <a href="termos.html">Termos</a> | 
-                <a href="contacto.html">Contacto</a>
+                <a href="privacidade.html">Privacidade</a> | <a href="termos.html">Termos</a> | <a href="contacto.html">Contacto</a>
             </nav>
         </footer>
     </div>
