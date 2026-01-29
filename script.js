@@ -11,27 +11,27 @@ function calcularCredito() {
     const n = prazoAnos * 12;
     const i = taxaAnual / 12;
 
-    // Prestação Mensal (Fórmula Francesa)
     const prestacao = capital * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
-    const jurosTotais = (prestacao * n) - capital;
+    const totalPagoOriginal = prestacao * n;
+    const jurosOriginais = totalPagoOriginal - capital;
 
     document.getElementById('results').style.display = 'block';
     document.getElementById('out-prestacao').innerText = `€${prestacao.toFixed(2)}`;
-    document.getElementById('out-juros').innerText = `€${jurosTotais.toFixed(2)}`;
+    document.getElementById('out-juros').innerText = `€${jurosOriginais.toFixed(2)}`;
 
     if (extra > 0) {
         const novoCapital = capital - extra;
         const novaPrestacao = novoCapital * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
         const poupancaMensal = prestacao - novaPrestacao;
-        const poupancaJuros = (prestacao * n) - (novaPrestacao * n) - extra;
+        const poupancaJuros = totalPagoOriginal - (novaPrestacao * n) - extra;
 
         document.getElementById('amortization-info').innerHTML = 
-            `Amortização de €${extra.toLocaleString()}:<br>Nova Prestação: €${novaPrestacao.toFixed(2)} (-€${poupancaMensal.toFixed(2)}/mês)<br>Poupança total de juros: <strong>€${poupancaJuros.toFixed(2)}</strong>`;
+            `💰 <strong>Poupança Real:</strong> Ao amortizar €${extra.toLocaleString()}, a sua prestação baixa €${poupancaMensal.toFixed(2)} e poupa <strong>€${poupancaJuros.toFixed(2)}</strong> em juros!`;
     } else {
-        document.getElementById('amortization-info').innerHTML = "Introduza um valor de amortização extra para ver a poupança.";
+        document.getElementById('amortization-info').innerHTML = "Introduza um valor de amortização para ver o benefício.";
     }
 
-    updateChart(capital, jurosTotais);
+    updateChart(capital, jurosOriginais);
 }
 
 function updateChart(cap, jur) {
@@ -41,7 +41,7 @@ function updateChart(cap, jur) {
         type: 'doughnut',
         data: {
             labels: ['Capital', 'Juros'],
-            datasets: [{ data: [cap, jur], backgroundColor: ['#059669', '#ef4444'] }]
+            datasets: [{ data: [cap, jur], backgroundColor: ['#059669', '#ef4444'], hoverOffset: 4 }]
         },
         options: { plugins: { legend: { position: 'bottom' } } }
     });
