@@ -1,48 +1,38 @@
-let myChart;
+function updateFinanciamento() {
+    const valor = parseFloat(document.getElementById('valorImovel').value) || 0;
+    const entrada = parseFloat(document.getElementById('entrada').value) || 0;
+    const financiado = valor - entrada;
+    document.getElementById('out-financiado').innerText = `€${financiado.toLocaleString('pt-PT')}`;
+}
 
 function calcularCredito() {
-    const capital = parseFloat(document.getElementById('capital').value) || 0;
-    const prazoAnos = parseInt(document.getElementById('prazo').value) || 0;
-    const taxaAnual = (parseFloat(document.getElementById('taxa').value) || 0) / 100;
-    const extra = parseFloat(document.getElementById('extra').value) || 0;
+    const valorImovel = parseFloat(document.getElementById('valorImovel').value) || 0;
+    const entrada = parseFloat(document.getElementById('entrada').value) || 0;
+    const prazoAnos = parseFloat(document.getElementById('prazo').value) || 0;
+    const spread = parseFloat(document.getElementById('spread').value) || 0;
+    const euribor = parseFloat(document.getElementById('euribor').value) || 0;
 
-    if (capital <= 0 || prazoAnos <= 0) return;
+    const montante = valorImovel - entrada;
+    const taxaAnual = spread + euribor;
+    const taxaMensal = (taxaAnual / 100) / 12;
+    const numeroPrestacoes = prazoAnos * 12;
 
-    const n = prazoAnos * 12;
-    const i = taxaAnual / 12;
+    if (montante > 0 && taxaMensal > 0 && numeroPrestacoes > 0) {
+        // Fórmula de Sistema de Amortização Francês (Price)
+        const prestacao = montante * (taxaMensal / (1 - Math.pow(1 + taxaMensal, -numeroPrestacoes)));
+        const mtic = prestacao * numeroPrestacoes;
 
-    const prestacao = capital * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
-    const totalPagoOriginal = prestacao * n;
-    const jurosOriginais = totalPagoOriginal - capital;
-
-    document.getElementById('results').style.display = 'block';
-    document.getElementById('out-prestacao').innerText = `€${prestacao.toFixed(2)}`;
-    document.getElementById('out-juros').innerText = `€${jurosOriginais.toFixed(2)}`;
-
-    if (extra > 0) {
-        const novoCapital = capital - extra;
-        const novaPrestacao = novoCapital * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
-        const poupancaMensal = prestacao - novaPrestacao;
-        const poupancaJuros = totalPagoOriginal - (novaPrestacao * n) - extra;
-
-        document.getElementById('amortization-info').innerHTML = 
-            `💰 <strong>Poupança Real:</strong> Ao amortizar €${extra.toLocaleString()}, a sua prestação baixa €${poupancaMensal.toFixed(2)} e poupa <strong>€${poupancaJuros.toFixed(2)}</strong> em juros!`;
-    } else {
-        document.getElementById('amortization-info').innerHTML = "Introduza um valor de amortização para ver o benefício.";
+        document.getElementById('results').style.display = 'block';
+        document.getElementById('out-prestacao').innerText = `€${prestacao.toFixed(2)}`;
+        document.getElementById('out-financiado').innerText = `€${montante.toLocaleString('pt-PT')}`;
+        document.getElementById('out-mtic').innerText = `€${mtic.toLocaleString('pt-PT', {minimumFractionDigits: 2})}`;
+    } else if (taxaMensal === 0) {
+        // Caso de taxa 0% (teórico)
+        const prestacao = montante / numeroPrestacoes;
+        document.getElementById('results').style.display = 'block';
+        document.getElementById('out-prestacao').innerText = `€${prestacao.toFixed(2)}`;
     }
-
-    updateChart(capital, jurosOriginais);
 }
 
-function updateChart(cap, jur) {
-    const ctx = document.getElementById('savingsChart').getContext('2d');
-    if (myChart) myChart.destroy();
-    myChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Capital', 'Juros'],
-            datasets: [{ data: [cap, jur], backgroundColor: ['#059669', '#ef4444'], hoverOffset: 4 }]
-        },
-        options: { plugins: { legend: { position: 'bottom' } } }
-    });
-}
+// Inicializar valor de financiamento ao carregar
+window.onload = updateFinanciamento;
