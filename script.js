@@ -1,58 +1,48 @@
 let myChart;
 
 function calcularCredito() {
-    const capital = parseFloat(document.getElementById('capital').value);
-    const prazoAnos = parseInt(document.getElementById('prazo').value);
-    const taxaAnual = parseFloat(document.getElementById('taxa').value) / 100;
+    const capital = parseFloat(document.getElementById('capital').value) || 0;
+    const prazoAnos = parseInt(document.getElementById('prazo').value) || 0;
+    const taxaAnual = (parseFloat(document.getElementById('taxa').value) || 0) / 100;
     const extra = parseFloat(document.getElementById('extra').value) || 0;
+
+    if (capital <= 0 || prazoAnos <= 0) return;
 
     const n = prazoAnos * 12;
     const i = taxaAnual / 12;
 
-    // Fórmula Francesa: PM = P * [i(1+i)^n] / [(1+i)^n - 1]
+    // Prestação Mensal (Fórmula Francesa)
     const prestacao = capital * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
-    const totalPagoSemExtra = prestacao * n;
-    const jurosTotais = totalPagoSemExtra - capital;
+    const jurosTotais = (prestacao * n) - capital;
 
-    // Simulação com Amortização Extra (Simplificada para impacto imediato)
-    const novoCapital = capital - extra;
-    const novaPrestacao = novoCapital * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
-    const poupancaMensal = prestacao - novaPrestacao;
-    const poupancaJurosTotal = (prestacao * n) - (novaPrestacao * n) - extra;
-
-    // Mostrar Resultados
     document.getElementById('results').style.display = 'block';
     document.getElementById('out-prestacao').innerText = `€${prestacao.toFixed(2)}`;
     document.getElementById('out-juros').innerText = `€${jurosTotais.toFixed(2)}`;
 
     if (extra > 0) {
+        const novoCapital = capital - extra;
+        const novaPrestacao = novoCapital * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
+        const poupancaMensal = prestacao - novaPrestacao;
+        const poupancaJuros = (prestacao * n) - (novaPrestacao * n) - extra;
+
         document.getElementById('amortization-info').innerHTML = 
-            `Ao amortizar €${extra.toLocaleString()}, a sua prestação baixa <strong>€${poupancaMensal.toFixed(2)}</strong> por mês e poupa cerca de <strong>€${poupancaJurosTotal.toFixed(2)}</strong> em juros até ao fim do contrato!`;
+            `Amortização de €${extra.toLocaleString()}:<br>Nova Prestação: €${novaPrestacao.toFixed(2)} (-€${poupancaMensal.toFixed(2)}/mês)<br>Poupança total de juros: <strong>€${poupancaJuros.toFixed(2)}</strong>`;
+    } else {
+        document.getElementById('amortization-info').innerHTML = "Introduza um valor de amortização extra para ver a poupança.";
     }
 
-    renderChart(capital, jurosTotais);
+    updateChart(capital, jurosTotais);
 }
 
-function renderChart(capital, juros) {
+function updateChart(cap, jur) {
     const ctx = document.getElementById('savingsChart').getContext('2d');
     if (myChart) myChart.destroy();
-
     myChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['Capital (Empréstimo)', 'Juros (Lucro do Banco)'],
-            datasets: [{
-                data: [capital, juros],
-                backgroundColor: ['#059669', '#ef4444'],
-                borderWidth: 0
-            }]
+            labels: ['Capital', 'Juros'],
+            datasets: [{ data: [cap, jur], backgroundColor: ['#059669', '#ef4444'] }]
         },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { position: 'bottom' },
-                title: { display: true, text: 'Distribuição Total do Pagamento' }
-            }
-        }
+        options: { plugins: { legend: { position: 'bottom' } } }
     });
 }
