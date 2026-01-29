@@ -1,64 +1,94 @@
-:root { --primary: #059669; --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --border: #e2e8f0; }
-body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); padding: 20px; margin: 0; }
-.container { max-width: 800px; margin: 0 auto; }
-header { text-align: center; margin-bottom: 30px; }
-.card { background: var(--card); padding: 2.5rem; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 24px; }
-.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.grid-res { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-@media (max-width: 600px) { .grid, .grid-res { grid-template-columns: 1fr; } }
-label { font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 8px; display: block; }
-input { width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 10px; font-size: 1rem; box-sizing: border-box; }
-input:focus { border-color: var(--primary); outline: none; }
-.btn-main { width: 100%; padding: 18px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: 800; cursor: pointer; margin-top: 20px; }
-.big-val { font-size: 2rem; font-weight: 800; color: var(--primary); }
-.res-card { background: #f1f5f9; padding: 20px; border-radius: 12px; text-align: center; }
-.chart-container { max-width: 300px; margin: 30px auto; }
-.highlight-info { background: #d1fae5; padding: 20px; border-radius: 12px; border: 1px solid var(--primary); font-weight: 600; text-align: center; margin-top: 20px; }
-.info-content h2 { color: var(--primary); }
-.info-content p { line-height: 1.8; color: #475569; }
-footer { text-align: center; padding: 40px 0; font-size: 0.85rem; color: #94a3b8; }
-footer a { color: var(--primary); text-decoration: none; margin: 0 10px; }
-/* Navbar Global Estilo */
-.navbar-global {
-    background: #1e2937;
-    padding: 12px 0;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+:root {
+    --primary: #059669; /* Verde Sucesso */
+    --primary-hover: #047857;
+    --dark: #111827;
+    --gray-bg: #f9fafb;
+    --text-main: #1f2937;
+    --border: #e5e7eb;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--gray-bg);
+    color: var(--text-main);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+}
+
+/* Navbar Global */
+.navbar-global {
+    background: var(--dark);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
 .nav-container {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 15px;
+    padding: 0 20px;
 }
+
 .nav-logo {
     color: white;
     font-weight: 800;
     text-decoration: none;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 }
+
 .nav-links {
-    list-style: none;
     display: flex;
-    gap: 15px;
+    gap: 20px;
+    list-style: none;
     margin: 0;
     padding: 0;
 }
+
 .nav-links a {
-    color: #cbd5e1;
+    color: #9ca3af;
     text-decoration: none;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    transition: color 0.2s;
+    transition: 0.2s;
 }
-.nav-links a:hover {
+
+.nav-links a:hover, .nav-links a.active {
     color: white;
 }
 
-/* Ajuste para Mobile */
-@media (max-width: 600px) {
-    .nav-container { flex-direction: column; gap: 10px; }
-    .nav-links { gap: 10px; font-size: 0.75rem; }
+/* Botão Padrão */
+.btn-main {
+    width: 100%;
+    background-color: var(--primary);
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-main:hover {
+    background-color: var(--primary-hover);
 }
