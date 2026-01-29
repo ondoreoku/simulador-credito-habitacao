@@ -7,12 +7,17 @@
       <priority>1.0</priority>
    </url>
    <url>
-      <loc>https://simulador-credito-habitacao.vercel.app/privacidade.html</loc>
+      <loc>https://simulador-credito-habitacao-2026.vercel.app/privacidade.html</loc>
       <lastmod>2026-01-29</lastmod>
       <priority>0.3</priority>
    </url>
    <url>
-      <loc>https://simulador-credito-habitacao.vercel.app/termos.html</loc>
+      <loc>https://simulador-credito-habitacao-2026.vercel.app/termos.html</loc>
+      <lastmod>2026-01-29</lastmod>
+      <priority>0.3</priority>
+   </url>
+   <url>
+      <loc>https://simulador-credito-habitacao-2026.vercel.app/contacto.html</loc>
       <lastmod>2026-01-29</lastmod>
       <priority>0.3</priority>
    </url>
