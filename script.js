@@ -30,7 +30,7 @@ async function calcularCredito() {
 
     if (btn) {
         btn.disabled = true;
-        btn.innerText = '⏳ A processar no servidor...';
+        btn.innerText = 'A processar no servidor...';
     }
     if (resultsDiv) resultsDiv.style.display = 'none';
 
